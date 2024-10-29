@@ -21,8 +21,7 @@ void coin_row (int C[],int n){
         else{
             B[i] = i-1;
             F[i] = F[i-1];
-        }
-        F[i] = max(C[i]+F[i-2],F[i-1]);
+        }    
     }
     cout<<"Max Value :"<<F[n-1]<<endl;
     cout<<"Chosen Coins: ";

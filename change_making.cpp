@@ -1,4 +1,5 @@
 #include<iostream>
+#include <cstdint>
 using namespace std;
 void change_making(int D[],int m,int n){
     int F[n+1];

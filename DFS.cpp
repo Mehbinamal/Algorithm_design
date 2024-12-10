@@ -1,41 +1,59 @@
-#include<iostream>
-#include<bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
 using namespace std;
-class Graph {
-    public:
-    map<int, bool> visited;
-    map<int, list<int>> adj;
-    void add_edge(int v,int w);
-    void DFS(int v); 
-};
-void Graph::add_edge(int v, int w){
-    adj[v].push_back(w);
-}
-void Graph::DFS(int v){
-    visited[v] = true;
-    cout<<v<<" ";
-    list<int>:: iterator i;
-    for(i= adj[v].begin(); i!= adj[v].end(); ++i)
-        if(!visited[*i])
-            DFS(*i);
+
+// Add Edge  as edges are undirectional
+void addEdge(vector<vector<int>> &mat, int i ,int j){
+    mat[i][j]=1;
+    mat[j][i]=1;
+
 }
 
-int main()
-{
-    // Create a graph given in the above diagram
-    Graph g;
-    g.add_edge(0, 1);
-    g.add_edge(0, 2);
-    g.add_edge(1, 2);
-    g.add_edge(2, 0);
-    g.add_edge(2, 3);
-    g.add_edge(3, 3);
-
-    cout << "Following is Depth First Traversal"
-            " (starting from vertex 2) \n";
-
-    // Function call
-    g.DFS(2);
-
+void displayMatrix(vector<vector<int>> &mat){
+    int V=mat.size();
+    for (int i = 0; i < V; i++)
+    {
+        for (int j = 0; j < V; j++)
+        {
+            cout<<mat[i][j]<<" ";
+        }
+        cout<<endl;
+        
+    } 
+}
+void DFSu(vector<vector<int>> &mat,int vertex,vector<bool> &visited){
+    visited[vertex] = true;
+    cout<<vertex<<" ";
+    for (int i= 0;i<mat.size();i++){
+        if (mat[vertex][i] == 1 && !visited[i]){
+            DFSu(mat,i,visited);
+        }
+    }
+}
+void DFS(vector<vector<int>> &mat,int startvertex){
+    vector<bool> visited(mat.size(),false);
+    DFSu(mat,startvertex,visited);
+}
+int main(){
+    int V, E;
+    cout << "Enter the number of vertices: ";
+    cin >> V;
+    vector<vector<int>> mat(V, vector<int>(V, 0));
+    cout << "Enter the number of edges: ";
+    cin >> E;
+    // Input each edge and add it to the graph
+    for (int i = 0; i < E; i++) {
+        int u, v;
+        cout << "Enter edge " << i + 1 << " (u v): ";
+        cin >> u >> v;
+        addEdge(mat, u, v);
+    }
+    displayMatrix(mat);
+    int startvertex;
+    cout << "Enter the starting vertex for BFS: ";
+    cin >> startvertex;
+    DFS(mat, startvertex);
+    cout << endl;
     return 0;
-}
+} 

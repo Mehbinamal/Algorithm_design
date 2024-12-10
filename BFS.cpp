@@ -2,50 +2,65 @@
 #include <vector>
 #include <queue>
 using namespace std;
-void BFS(vector<vector<int>> & adjList, int startnode, vector<bool> visited){
-    queue <int> q;
-    visited[startnode] = true;
-    q.push(startnode);
-    while(!q.empty()){
-        int currentnode = q.front();
+void BFS(vector<vector<int>> &mat,int startvertex){
+    int V = mat.size();
+    vector<bool> visited(V,false);
+    queue<int> q;
+    visited[startvertex]=true;
+    q.push(startvertex);
+    while (!q.empty())
+    {
+        int vertex = q.front();
         q.pop();
-        cout<<currentnode<<" ";
-        for (int neighbor : adjList[currentnode] ){
-            if(!visited[neighbor]){
-                visited[neighbor] = true;
-                q.push(neighbor);
+        cout<<vertex<<" ";
+        for (int i=0;i<V;i++){
+            if(mat[vertex][i] == 1 && !visited[i]){
+                visited[i] = true;
+                q.push(i);
             }
         }
-    }    
+    }  
+}
+void addEdge(vector<vector<int>> &mat, int i ,int j){
+    mat[i][j]=1;
+    mat[j][i]=1;
 }
 
-void addEdge(vector<vector<int> >& adjList, int u, int v)
-{
-    adjList[u].push_back(v);
+void displayMatrix(vector<vector<int>> &mat){
+    int V=mat.size();
+    for (int i = 0; i < V; i++)
+    {
+        for (int j = 0; j < V; j++)
+        {
+            cout<<mat[i][j]<<" ";
+        }
+        cout<<endl;
+        
+    }   
 }
+int main(){
 
-int main()
-{
-    // Number of vertices in the graph
-    int vertices = 5;
-
-    // Adjacency list representation of the graph
-    vector<vector<int> > adjList(vertices);
-
-    // Add edges to the graph
-    addEdge(adjList, 0, 1);
-    addEdge(adjList, 0, 2);
-    addEdge(adjList, 1, 3);
-    addEdge(adjList, 1, 4);
-    addEdge(adjList, 2, 4);
-
-    // Mark all the vertices as not visited
-    vector<bool> visited(vertices, false);
-
-    // Perform BFS traversal starting from vertex 0
-    cout << "Breadth First Traversal starting from vertex "
-            "0: ";
-    BFS(adjList, 2, visited);
-
-    return 0;
+    int V, E;
+    
+    cout << "Enter the number of vertices: ";
+    cin >> V;
+    
+    vector<vector<int>> mat(V, vector<int>(V, 0));
+    
+    cout << "Enter the number of edges: ";
+    cin >> E;
+    
+    // Input each edge and add it to the graph
+    for (int i = 0; i < E; i++) {
+        int u, v;
+        cout << "Enter edge " << i + 1 << " (u v): ";
+        cin >> u >> v;
+        addEdge(mat, u, v);
+    }
+    displayMatrix(mat);
+    int startvertex;
+    cout << "Enter the starting vertex for BFS: ";
+    cin >> startvertex;
+    BFS(mat, startvertex);
+    cout << endl;
 }
